@@ -1,14 +1,28 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 from datetime import datetime
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 
-# Connect MongoDb
-client = MongoClient('mongodb://kasmin123:kasmin123@ac-xcdbald-shard-00-00.zacdl7x.mongodb.net:27017,ac-xcdbald-shard-00-01.zacdl7x.mongodb.net:27017,ac-xcdbald-shard-00-02.zacdl7x.mongodb.net:27017/?ssl=true&replicaSet=atlas-wjm5br-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
+from flask import Flask, render_template, request, jsonify
+from pymongo import MongoClient
 
-db = client.dbdiary
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
-app=Flask(__name__)
- 
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DB_NAME")
+
+client = MongoClient(MONGODB_URI)
+
+db = client[DB_NAME]
+
+app = Flask(__name__)
+
+
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
